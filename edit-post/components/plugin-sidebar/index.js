@@ -8,7 +8,6 @@ import { PluginContext } from '@wordpress/plugins';
 /**
  * Internal dependencies
  */
-import './style.scss';
 import Sidebar from '../sidebar';
 import SidebarHeader from '../sidebar/sidebar-header';
 
