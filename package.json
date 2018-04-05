@@ -57,7 +57,6 @@
 		"uuid": "3.1.0"
 	},
 	"devDependencies": {
-		"@wordpress/babel-preset-default": "1.1.1",
 		"@wordpress/custom-templated-path-webpack-plugin": "1.0.0",
 		"@wordpress/jest-preset-default": "1.0.3",
 		"@wordpress/scripts": "1.1.0",
@@ -95,27 +94,6 @@
 		"webpack": "4.4.1",
 		"webpack-cli": "2.0.13",
 		"webpack-rtl-plugin": "github:yoavf/webpack-rtl-plugin#develop"
-	},
-	"babel": {
-		"presets": [
-			"@wordpress/default"
-		],
-		"plugins": [
-			"transform-async-generator-functions"
-		],
-		"env": {
-			"production": {
-				"plugins": [
-					[
-						"./i18n/babel-plugin",
-						{
-							"output": "languages/gutenberg.pot"
-						}
-					],
-					"transform-async-generator-functions"
-				]
-			}
-		}
 	},
 	"scripts": {
 		"prebuild": "check-node-version --package",
