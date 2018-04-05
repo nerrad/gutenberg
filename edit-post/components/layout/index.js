@@ -89,7 +89,7 @@ function Layout( {
 			) }
 			<DocumentSidebar />
 			<BlockSidebar />
-			{ pluginSidebarOpened && <PluginSidebar.Slot name={ sidebarName } /> }
+			<PluginSidebar.Slot />
 			{
 				isMobileViewport && sidebarIsOpened && <ScrollLock />
 			}
