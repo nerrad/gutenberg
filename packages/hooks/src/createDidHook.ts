@@ -1,28 +1,31 @@
 /**
  * Internal dependencies
  */
-import validateHookName from './validateHookName.js';
+import validateHookName from './validateHookName';
+import type { Hooks, StoreKey } from './types';
 
 /**
- * @callback DidHook
  *
  * Returns the number of times an action has been fired.
  *
- * @param {string} hookName The hook name to check.
- *
- * @return {number | undefined} The number of times the hook has run.
  */
+export type DidHook = (
+	/**
+	 * The hook name to check.
+	 */
+	hookName: string
+) => number | undefined;
 
 /**
  * Returns a function which, when invoked, will return the number of times a
  * hook has been called.
  *
- * @param {import('.').Hooks}    hooks    Hooks instance.
- * @param {import('.').StoreKey} storeKey
+ * @param hooks    Hooks instance.
+ * @param storeKey
  *
- * @return {DidHook} Function that returns a hook's call count.
+ * @return  Function that returns a hook's call count.
  */
-function createDidHook( hooks, storeKey ) {
+function createDidHook( hooks: Hooks, storeKey: StoreKey ): DidHook {
 	return function didHook( hookName ) {
 		const hooksStore = hooks[ storeKey ];
 

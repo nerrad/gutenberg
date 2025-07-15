@@ -1,27 +1,34 @@
 /**
  * External dependencies
  */
-const npmPackageArg = require( 'npm-package-arg' );
-const semver = require( 'semver' );
-const execa = require( 'execa' );
-const { join } = require( 'path' );
-const { createHash } = require( 'crypto' );
+import npmPackageArg from 'npm-package-arg';
+import semver from 'semver';
+import execa from 'execa';
+import { join } from 'path';
+import { createHash } from 'crypto';
 
 /**
- * @typedef WPLazyImportOptions
- *
- * @property {string}   [localPath] Path to the local directory or file.
- * @property {()=>void} [onInstall] Callback to invoke when install starts.
+ * Options for lazy importing a package.
  */
-
+export interface LazyImportOptions {
+	/**
+	 * Path to the local directory or file.
+	 */
+	localPath?: string;
+	/**
+	 *
+	 * Callback to invoke when install starts.
+	 */
+	onInstall?: () => void;
+}
 /**
  * Returns an md5 hash of the given string.
  *
- * @param {string} text Text for which to generate hash.
+ * @param text Text for which to generate hash.
  *
- * @return {string} md5 hash of string.
+ * @return md5 hash of string.
  */
-function md5( text ) {
+function md5( text: string ): string {
 	return createHash( 'md5' ).update( text ).digest( 'hex' );
 }
 
@@ -29,11 +36,11 @@ function md5( text ) {
  * Given an arg string as would be passed to `npm install`, returns a string to
  * use as the alias name of the package to install locally if needed.
  *
- * @param {string} arg A string that you might pass to `npm install`.
+ * @param arg A string that you might pass to `npm install`.
  *
- * @return {string} Module to use as local package alias.
+ * @return  Module to use as local package alias.
  */
-function getLocalModuleName( arg ) {
+function getLocalModuleName( arg: string ): string {
 	return '@wordpress/lazy-import.' + md5( arg );
 }
 
@@ -41,12 +48,12 @@ function getLocalModuleName( arg ) {
  * Installs npm package by arg name at the given prefix path. Creates the prefix
  * path if it doesn't yet exist.
  *
- * @param {string} arg   Package install arg (name and version specification).
- * @param {string} alias Alias to use for local module name.
+ * @param arg   Package install arg (name and version specification).
+ * @param alias Alias to use for local module name.
  *
- * @return {Promise<void>} Promise resolving once package is installed.
+ * @return  Promise resolving once package is installed.
  */
-async function install( arg, alias ) {
+async function install( arg: string, alias: string ): Promise< void > {
 	await execa( 'npm', [ 'install', '--no-save', alias + '@npm:' + arg ] );
 }
 
@@ -57,13 +64,16 @@ async function install( arg, alias ) {
  * to a temporary directory at `node_modules/.wp-lazy` relative to where the
  * current working directory.
  *
- * @param {string}                       arg       A string that you might pass
- *                                                 to `npm install`.
- * @param {Partial<WPLazyImportOptions>} [options] Optional options object.
+ * @param arg       A string that you might pass
+ *                  to `npm install`.
+ * @param [options] Optional options object.
  *
- * @return {Promise<NodeRequire>} Promise resolving to required module.
+ * @return  Promise resolving to required module.
  */
-async function lazyImport( arg, options = {} ) {
+export async function lazyImport(
+	arg: string,
+	options: Partial< LazyImportOptions > = {}
+): Promise< NodeRequire > {
 	const { localPath = '' } = options;
 	const { rawSpec, name } = npmPackageArg( arg );
 
@@ -138,4 +148,4 @@ async function lazyImport( arg, options = {} ) {
 	return require( join( localModule, localPath ) );
 }
 
-module.exports = lazyImport;
+export default lazyImport;

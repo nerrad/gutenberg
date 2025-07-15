@@ -44,6 +44,15 @@ export const settings = {
 			},
 		],
 	},
+	__experimentalImage( attributes, { context } ) {
+		if (
+			attributes.mediaType === 'image' &&
+			context === 'list-view' &&
+			attributes?.mediaUrl
+		) {
+			return attributes?.mediaUrl;
+		}
+	},
 	transforms,
 	edit,
 	save,

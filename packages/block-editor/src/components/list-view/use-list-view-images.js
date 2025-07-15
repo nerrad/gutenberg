@@ -3,6 +3,7 @@
  */
 import { useMemo } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
+import { __experimentalGetBlockImage as getBlockImage } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -74,8 +75,26 @@ export default function useListViewImages( { clientId, isExpanded } ) {
 		},
 		[ clientId ]
 	);
-
 	const images = useMemo( () => {
+		const blockImageURL = getBlockImage(
+			block.name,
+			block.attributes,
+			'list-view'
+		);
+		if ( blockImageURL ) {
+			return [
+				{
+					url: blockImageURL,
+					alt:
+						block.attributes?.alt ||
+						block.attributes?.mediaAlt ||
+						'',
+					clientId: block.clientId,
+				},
+			];
+		}
+
+		// Fallback to custom logic for core/image or core/gallery.
 		return getImagesFromBlock( block, isExpanded );
 	}, [ block, isExpanded ] );
 

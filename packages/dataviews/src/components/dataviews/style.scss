@@ -107,7 +107,9 @@
 	.dataviews__view-actions,
 	.dataviews-filters__container,
 	.dataviews-footer,
-	.dataviews-view-grid {
+	.dataviews-view-grid,
+	.dataviews-loading,
+	.dataviews-no-results {
 		padding-inline: $grid-unit-30;
 	}
 

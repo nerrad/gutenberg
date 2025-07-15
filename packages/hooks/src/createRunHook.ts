@@ -1,16 +1,31 @@
 /**
+ * Internal dependencies
+ */
+import type { Hooks, StoreKey } from './types';
+
+export type RunHook = (
+	hookName: string,
+	...args: unknown[]
+) => undefined | unknown;
+
+/**
  * Returns a function which, when invoked, will execute all callbacks
  * registered to a hook of the specified type, optionally returning the final
  * value of the call chain.
  *
- * @param {import('.').Hooks}    hooks          Hooks instance.
- * @param {import('.').StoreKey} storeKey
- * @param {boolean}              returnFirstArg Whether each hook callback is expected to return its first argument.
- * @param {boolean}              async          Whether the hook callback should be run asynchronously
+ * @param hooks          Hooks instance.
+ * @param storeKey
+ * @param returnFirstArg Whether each hook callback is expected to return its first argument.
+ * @param async          Whether the hook callback should be run asynchronously
  *
- * @return {(hookName:string, ...args: unknown[]) => undefined|unknown} Function that runs hook callbacks.
+ * @return Function that runs hook callbacks.
  */
-function createRunHook( hooks, storeKey, returnFirstArg, async ) {
+function createRunHook(
+	hooks: Hooks,
+	storeKey: StoreKey,
+	returnFirstArg: boolean,
+	async: boolean
+): RunHook {
 	return function runHook( hookName, ...args ) {
 		const hooksStore = hooks[ storeKey ];
 

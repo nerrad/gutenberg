@@ -156,6 +156,7 @@ export {
 	__experimentalSanitizeBlockAttributes,
 	getBlockAttributesNamesByRole,
 	__experimentalGetBlockAttributesNamesByRole,
+	getBlockImage as __experimentalGetBlockImage,
 } from './utils';
 
 // Templates are, in a general sense, a basic collection of block nodes with any

@@ -8,6 +8,7 @@ import createRunHook from './createRunHook';
 import createCurrentHook from './createCurrentHook';
 import createDoingHook from './createDoingHook';
 import createDidHook from './createDidHook';
+import type { Store } from './types';
 
 /**
  * Internal class for constructing hooks. Use `createHooks()` function
@@ -17,12 +18,32 @@ import createDidHook from './createDidHook';
  * @private
  */
 export class _Hooks {
+	public actions: Store;
+	public filters: Store;
+
+	public addAction: ReturnType< typeof createAddHook >;
+	public addFilter: ReturnType< typeof createAddHook >;
+	public removeAction: ReturnType< typeof createRemoveHook >;
+	public removeFilter: ReturnType< typeof createRemoveHook >;
+	public hasAction: ReturnType< typeof createHasHook >;
+	public hasFilter: ReturnType< typeof createHasHook >;
+	public removeAllActions: ReturnType< typeof createRemoveHook >;
+	public removeAllFilters: ReturnType< typeof createRemoveHook >;
+	public doAction: ReturnType< typeof createRunHook >;
+	public doActionAsync: ReturnType< typeof createRunHook >;
+	public applyFilters: ReturnType< typeof createRunHook >;
+	public applyFiltersAsync: ReturnType< typeof createRunHook >;
+	public currentAction: ReturnType< typeof createCurrentHook >;
+	public currentFilter: ReturnType< typeof createCurrentHook >;
+	public doingAction: ReturnType< typeof createDoingHook >;
+	public doingFilter: ReturnType< typeof createDoingHook >;
+	public didAction: ReturnType< typeof createDidHook >;
+	public didFilter: ReturnType< typeof createDidHook >;
+
 	constructor() {
-		/** @type {import('.').Store} actions */
 		this.actions = Object.create( null );
 		this.actions.__current = new Set();
 
-		/** @type {import('.').Store} filters */
 		this.filters = Object.create( null );
 		this.filters.__current = new Set();
 
@@ -47,14 +68,14 @@ export class _Hooks {
 	}
 }
 
-/** @typedef {_Hooks} Hooks */
+export type Hooks = _Hooks;
 
 /**
  * Returns an instance of the hooks object.
  *
- * @return {Hooks} A Hooks instance.
+ * @return A Hooks instance.
  */
-function createHooks() {
+function createHooks(): Hooks {
 	return new _Hooks();
 }
 

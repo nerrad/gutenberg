@@ -1,34 +1,42 @@
 /**
  * Internal dependencies
  */
-import validateNamespace from './validateNamespace.js';
-import validateHookName from './validateHookName.js';
+import validateNamespace from './validateNamespace';
+import validateHookName from './validateHookName';
+import type { Hooks, StoreKey } from './types';
 
 /**
- * @callback RemoveHook
  * Removes the specified callback (or all callbacks) from the hook with a given hookName
  * and namespace.
- *
- * @param {string} hookName  The name of the hook to modify.
- * @param {string} namespace The unique namespace identifying the callback in the
- *                           form `vendor/plugin/function`.
- *
- * @return {number | undefined} The number of callbacks removed.
  */
+export type RemoveHook = (
+	/**
+	 * The name of the hook to modify.
+	 */
+	hookName: string,
+	/**
+	 * The unique namespace identifying the callback in the form `vendor/plugin/function`.
+	 */
+	namespace: string
+) => number | undefined;
 
 /**
  * Returns a function which, when invoked, will remove a specified hook or all
  * hooks by the given name.
  *
- * @param {import('.').Hooks}    hooks             Hooks instance.
- * @param {import('.').StoreKey} storeKey
- * @param {boolean}              [removeAll=false] Whether to remove all callbacks for a hookName,
- *                                                 without regard to namespace. Used to create
- *                                                 `removeAll*` functions.
+ * @param hooks             Hooks instance.
+ * @param storeKey
+ * @param [removeAll=false] Whether to remove all callbacks for a hookName,
+ *                          without regard to namespace. Used to create
+ *                          `removeAll*` functions.
  *
- * @return {RemoveHook} Function that removes hooks.
+ * @return Function that removes hooks.
  */
-function createRemoveHook( hooks, storeKey, removeAll = false ) {
+function createRemoveHook(
+	hooks: Hooks,
+	storeKey: StoreKey,
+	removeAll: boolean = false
+): RemoveHook {
 	return function removeHook( hookName, namespace ) {
 		const hooksStore = hooks[ storeKey ];
 
